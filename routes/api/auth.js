@@ -10,6 +10,8 @@ const {
 
 const ctrlWrapper = require('../../helper/apiHelpers');
 
+const authenticate = require('../../middlewares/authenticate ');
+
 const { validator } = require('../../middlewares/validator');
 
 const { schemas } = require('../../models/users');
@@ -18,8 +20,8 @@ const router = express.Router();
 
 router.post('/signup', validator(schemas.signupSchema), ctrlWrapper(singup));
 router.post('/login', validator(schemas.loginSchema), ctrlWrapper(login));
-router.get('/logout', authentificate, ctrlWrapper(logout));
-router.get('/current', authentificate, ctrlWrapper(getCurrentUser));
+router.get('/logout', authenticate, ctrlWrapper(logout));
+router.get('/current', authenticate, ctrlWrapper(getCurrentUser));
 router.patch(
   '/',
   authenticate,

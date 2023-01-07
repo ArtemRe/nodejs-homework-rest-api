@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const { SECRET_KEY } = process.env;
 
-const RequestError = require('../helpers/requestError');
+const RequestError = require('../helper/requestError');
 const { User } = require('../models/users');
 
 const singup = async (req, res) => {
