@@ -28,8 +28,6 @@ const userSchema = new Schema(
 
 userSchema.post('save', SchemaErrors);
 
-userSchema.post('save', handleSchemaErrors);
-
 const signupSchema = Joi.object({
   email: Joi.string().required(),
   password: Joi.string().min(6).required(),
