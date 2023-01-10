@@ -1,5 +1,8 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const gravatar = require('gravatar');
+const path = require('path');
+const fs = require('fs/promises');
 
 const { SECRET_KEY } = process.env;
 
@@ -12,10 +15,16 @@ const singup = async (req, res) => {
   if (user) {
     throw RequestError(409, 'Email in use');
   }
+  const avatarURL = gravatar.url(email);
   const hashPassword = await bcrypt.hash(password, 10);
-  const result = await User.create({ email, password: hashPassword });
+  const result = await User.create({
+    email,
+    password: hashPassword,
+    avatarURL,
+  });
   res.status(201).json({
     email: result.email,
+    avatarURL: result.avatarURL,
   });
 };
 
@@ -63,4 +72,31 @@ const updateSubscription = async (req, res) => {
   return res.status(200).json(data);
 };
 
-module.exports = { singup, login, logout, getCurrentUser, updateSubscription };
+const updateAvatar = async (req, res) => {
+  const { path: tempUpload, originalname } = req.file;
+  const { _id: id } = req.user;
+  const avatarName = `${id}_${originalname}`;
+  try {
+    const resultUpload = path.join(
+      process.cwd(),
+      'public',
+      'avatars',
+      avatarName
+    );
+    await fs.rename(tempUpload, resultUpload);
+    const avatarURL = path.join('public', 'avatars', avatarName);
+    await User.findByIdAndUpdate(req.user._id, { avatarURL });
+    res.json({ avatarURL });
+  } catch (error) {
+    await fs.unlink(tempUpload);
+  }
+};
+
+module.exports = {
+  singup,
+  login,
+  logout,
+  getCurrentUser,
+  updateSubscription,
+  updateAvatar,
+};
