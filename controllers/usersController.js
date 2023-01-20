@@ -35,6 +35,7 @@ const singup = async (req, res) => {
     html: `<a href="http://localhost:3000/auth/verify/${verificationToken}" target="_blank">Натисніть для підтвердження</a>`,
   };
   await sendEmail(mail);
+  console.log(mail);
 
   res.status(201).json({
     email: result.email,
