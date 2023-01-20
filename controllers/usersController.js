@@ -22,10 +22,17 @@ const singup = async (req, res) => {
 
   const verificationToken = nanoid();
 
+  const result = await User.create({
+    email,
+    password: hashPassword,
+    avatarURL,
+    verificationToken,
+  });
+
   const mail = {
     to: email,
     subject: 'Підтвердження реєстрації на сайті',
-    html: `<a href="http://localhost:3000/users/verify/${verificationToken}" target="_blank">Натисніть для підтвердження</a>`,
+    html: `<a href="http://localhost:3000/auth/verify/${verificationToken}" target="_blank">Натисніть для підтвердження</a>`,
   };
   await sendEmail(mail);
 
@@ -131,7 +138,7 @@ const resendVerifyEmail = async (req, res) => {
   const mail = {
     to: email,
     subject: 'Підтвердження реєстрації на сайті',
-    html: `<a href="http://localhost:3000/users/verify/${user.verificationToken}" target="_blank">Натисніть для підтвердження</a>`,
+    html: `<a href="http://localhost:3000/auth/verify/${user.verificationToken}" target="_blank">Натисніть для підтвердження</a>`,
   };
   await sendEmail(mail);
 
