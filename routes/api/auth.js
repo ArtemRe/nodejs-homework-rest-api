@@ -1,5 +1,4 @@
 const express = require('express');
-
 const {
   singup,
   login,
@@ -7,18 +6,15 @@ const {
   getCurrentUser,
   updateSubscription,
   updateAvatar,
+  verifyEmail,
+  resendVerifyEmail,
 } = require('../../controllers/usersController');
 
 const ctrlWrapper = require('../../helper/apiHelpers');
-
 const authenticate = require('../../middlewares/authenticate ');
-
-const { validator } = require('../../middlewares/validator');
-
 const resizeAvartar = require('../../middlewares/resizeAvatar');
-
 const upload = require('../../middlewares/upload');
-
+const { validator } = require('../../middlewares/validator');
 const { schemas } = require('../../models/users');
 
 const router = express.Router();
@@ -39,6 +35,12 @@ router.patch(
   upload.single('avatar'),
   ctrlWrapper(resizeAvartar),
   ctrlWrapper(updateAvatar)
+);
+router.get('/verify/:verificationToken', ctrlWrapper(verifyEmail));
+router.post(
+  '/verify',
+  validator(schemas.verifyEmailShema),
+  ctrlWrapper(resendVerifyEmail)
 );
 
 module.exports = router;
