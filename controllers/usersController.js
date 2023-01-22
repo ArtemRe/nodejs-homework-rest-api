@@ -32,7 +32,7 @@ const singup = async (req, res) => {
   const mail = {
     to: email,
     subject: 'Підтвердження реєстрації на сайті',
-    html: `<a href="http://localhost:3000/auth/verify/${verificationToken}" target="_blank">Натисніть для підтвердження</a>`,
+    html: `<a href="http://localhost:3000/api/auth/verify/${verificationToken}" target="_blank">Натисніть для підтвердження</a>`,
   };
   await sendEmail(mail);
   console.log(mail);
@@ -41,6 +41,7 @@ const singup = async (req, res) => {
     email: result.email,
     avatarURL: result.avatarURL,
   });
+  console.log(verificationToken);
 };
 
 const login = async (req, res) => {
@@ -139,7 +140,7 @@ const resendVerifyEmail = async (req, res) => {
   const mail = {
     to: email,
     subject: 'Підтвердження реєстрації на сайті',
-    html: `<a href="http://localhost:3000/auth/verify/${user.verificationToken}" target="_blank">Натисніть для підтвердження</a>`,
+    html: `<a href="http://localhost:3000/api/auth/verify//verify/${user.verificationToken}" target="_blank">Натисніть для підтвердження</a>`,
   };
   await sendEmail(mail);
 

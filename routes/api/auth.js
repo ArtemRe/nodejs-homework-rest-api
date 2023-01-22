@@ -1,5 +1,4 @@
 const express = require('express');
-
 const {
   singup,
   login,
@@ -12,15 +11,10 @@ const {
 } = require('../../controllers/usersController');
 
 const ctrlWrapper = require('../../helper/apiHelpers');
-
 const authenticate = require('../../middlewares/authenticate ');
-
-const { validator } = require('../../middlewares/validator');
-
 const resizeAvartar = require('../../middlewares/resizeAvatar');
-
 const upload = require('../../middlewares/upload');
-
+const { validator } = require('../../middlewares/validator');
 const { schemas } = require('../../models/users');
 
 const router = express.Router();
